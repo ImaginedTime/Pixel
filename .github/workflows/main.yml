@@ -22,6 +22,7 @@ jobs:
           architecture: x64
 
       - run: flutter build apk --release --split-per-abi --obfuscate --split-debug-info=build/app/outputs/symbols
+
       - name: Push to Releases
         uses: ncipollo/release-action@v1
         with:

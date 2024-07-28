@@ -180,7 +180,7 @@ class _HomeState extends State<Home> {
             const SizedBox(
               height: 10,
             ),
-            if (isLoading)
+            if (isLoading && images.isEmpty)
               const Center(
                 child: CircularProgressIndicator(),
               )
