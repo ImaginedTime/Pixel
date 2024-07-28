@@ -1,6 +1,6 @@
-# pixel_flutter
+# Pixel
 
-A new Flutter project.
+A Flutter Project to Search, View and Download Images from Pixabay API.
 
 ## Getting Started
 

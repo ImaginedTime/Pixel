@@ -57,39 +57,34 @@ class _HomeState extends State<Home> {
       });
 
       if(images.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text(
-              'No images found',
-              style: TextStyle(
-                fontSize: 12,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            backgroundColor: Color(0xFFe91e63),
-          ),
-        );
+        showSnackBar('No images found', const Color(0xFFe91e63));
       }
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(
-            'An error occurred while fetching images: ${res['msg']}',
-            style: const TextStyle(
-              fontSize: 12,
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          backgroundColor: const Color(0xFFe91e63),
-        ),
+      showSnackBar(
+          'An error occurred while fetching images: ${res['msg']}',
+          const Color(0xFFe91e63)
       );
     }
 
     setState(() {
       isLoading = false;
     });
+  }
+
+  void showSnackBar(String message, Color color) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: color,
+      ),
+    );
   }
 
   void _onRefresh() async {
@@ -104,32 +99,8 @@ class _HomeState extends State<Home> {
       },
     );
 
-    // Delay bu 2 s
-    await Future.delayed(const Duration(seconds: 2));
-
     setState(() {
       isRefreshing = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    fetchImages();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        fetchImages(
-          params: {
-            'page': (images.length / 30 + 1).toInt().toString(),
-            'category': selectedCategory,
-            'q': querySearchController.text,
-          },
-          append: true,
-        );
-      }
     });
   }
 
@@ -164,6 +135,27 @@ class _HomeState extends State<Home> {
         'q': querySearchController.text,
       },
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    fetchImages();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        fetchImages(
+          params: {
+            'page': (images.length / 30 + 1).toInt().toString(),
+            'category': selectedCategory,
+            'q': querySearchController.text,
+          },
+          append: true,
+        );
+      }
+    });
   }
 
   @override
